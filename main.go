@@ -4,8 +4,8 @@ package main
 import (
   "net/http"
   "github.com/gin-gonic/gin"
-  "github.com/xiaocuixt/database"
-  "github.com/xiaocuixt/models"
+  "github.com/xiaocuixt/weblo/database"
+  "github.com/xiaocuixt/weblo/models"
 )
 
 var router *gin.Engine

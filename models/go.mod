@@ -1,3 +1,3 @@
-module github.com/xiaocuixt/models
+module github.com/xiaocuixt/weblo/models
 
 go 1.16
