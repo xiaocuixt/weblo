@@ -4,11 +4,14 @@ package main
 import (
   "net/http"
   "github.com/gin-gonic/gin"
+  "github.com/xiaocuixt/database"
+  "github.com/xiaocuixt/models"
 )
 
 var router *gin.Engine
 
 func main() {
+  InitDb()
   router := gin.Default()
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/*")
