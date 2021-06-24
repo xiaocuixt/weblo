@@ -16,11 +16,23 @@ func main() {
 
   router := gin.Default()
   // loads all the template files located in the templates folder
-  router.LoadHTMLGlob("templates/*")
+  router.LoadHTMLGlob("templates/**/*")
 
   router.GET("/", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "index.tmpl", gin.H{
+    c.HTML(http.StatusOK, "home/index.tmpl", gin.H{
       "title": "Weblo",
+    })
+  })
+
+  router.GET("/articles", func(c *gin.Context) {
+    c.HTML(http.StatusOK, "articles/index.tmpl", gin.H{
+      "title": "articles list",
+    })
+  })
+
+  router.GET("/articles/new", func(c *gin.Context) {
+    c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{
+      "title": "new article",
     })
   })
 
