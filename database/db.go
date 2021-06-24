@@ -4,7 +4,6 @@ import (
    "fmt"
    "gorm.io/driver/mysql"
    "gorm.io/gorm"
-   "weblo/models"
 )
 
 const DB_USERNAME = "root"
@@ -17,7 +16,6 @@ var Db *gorm.DB
 func InitDb() *gorm.DB {
    Db = connectDB()
    return Db
-   Db.AutoMigrate(&Article{})
 }
 
 func connectDB() (*gorm.DB) {

@@ -11,7 +11,9 @@ import (
 var router *gin.Engine
 
 func main() {
-  InitDb()
+  Db := database.InitDb()
+  Db.AutoMigrate(&models.Article{})
+
   router := gin.Default()
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/*")

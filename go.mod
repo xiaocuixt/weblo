@@ -1,4 +1,4 @@
-module weblo
+module github.com/xiaocuixt/weblo
 
 go 1.16
 
