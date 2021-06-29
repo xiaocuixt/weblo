@@ -3,5 +3,14 @@
     <h1>
       {{ .title }}
     </h1>
+    <form action="/articles" method="POST">
+      <label for="title">Title</label>
+      <input type="text" name="title">
+      <br>
+      <label for="content">Content</label>
+      <input type="text" name="content">
+      <br>
+      <input type="submit">
+    </form>
   </html>
 {{ end }}

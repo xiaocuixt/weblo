@@ -5,14 +5,14 @@ import (
   "net/http"
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
-  "github.com/xiaocuixt/weblo/models"
+  "github.com/xiaocuixt/weblo/controllers"
 )
 
 var router *gin.Engine
 
 func main() {
-  Db := database.InitDb()
-  Db.AutoMigrate(&models.Article{})
+  database.InitDb()
+  println("start program ....... ")
 
   router := gin.Default()
   // loads all the template files located in the templates folder
@@ -24,17 +24,13 @@ func main() {
     })
   })
 
-  router.GET("/articles", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "articles/index.tmpl", gin.H{
-      "title": "articles list",
-    })
-  })
-
-  router.GET("/articles/new", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{
-      "title": "new article",
-    })
-  })
+  router.GET("/articles", controllers.ListArticle)
+  router.GET("/articles/:id", controllers.ShowArticle)
+  router.GET("/articles/new", controllers.NewArticle)
+  router.POST("/articles", controllers.CreateArticle)
+  router.GET("/articles/:id/edit", controllers.EditArticle)
+  router.POST("/articles/:id", controllers.UpdateArticle)
+  router.DELETE("/articles/:id", controllers.DeleteArticle)
 
   router.Run()
 }
