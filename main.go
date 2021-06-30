@@ -40,5 +40,10 @@ func main() {
   router.POST("/articles/:id", controllers.UpdateArticle)
   router.DELETE("/articles/:id", controllers.DeleteArticle)
 
+  // user auth
+  router.GET("/users/signup", controllers.NewUser)
+  router.POST("/users", controllers.CreateUser)
+  router.GET("/users/login", controllers.NewSession)
+
   router.Run()
 }
