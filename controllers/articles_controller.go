@@ -10,7 +10,7 @@ import (
 
 func ListArticle(c *gin.Context) {
   var articles []models.Article
-  database.Db.Find(&articles)
+  database.DB.Find(&articles)
 
   //c.JSON(http.StatusOK, gin.H{"data": articles})
   c.HTML(http.StatusOK, "articles/index.tmpl", gin.H{
@@ -29,7 +29,11 @@ func ShowArticle(c *gin.Context) {
   id := c.Param("id")
 
   var article models.Article
-  database.Db.First(&article, id)
+  err := database.DB.First(&article, id).Error
+  if err != nil {
+    // handle 404
+    return
+  }
 
   // c.JSON(http.StatusOK, gin.H{"data": article})
   c.HTML(http.StatusOK, "articles/show.tmpl", gin.H{
@@ -42,7 +46,7 @@ func CreateArticle(c *gin.Context) {
   content := c.PostForm("content")
 
   article := models.Article{Title: title, Content: content}
-  database.Db.Create(&article)
+  database.DB.Create(&article)
 
   c.Redirect(http.StatusFound, "/articles")
 }
@@ -51,7 +55,7 @@ func EditArticle(c *gin.Context) {
   id := c.Param("id")
 
   var article models.Article
-  database.Db.First(&article, id)
+  database.DB.First(&article, id)
 
   c.HTML(http.StatusOK, "articles/edit.tmpl", gin.H{
     "article": article,
@@ -64,18 +68,18 @@ func UpdateArticle(c *gin.Context) {
   id := c.Param("id")
 
   var article models.Article
-  database.Db.First(&article, id)
+  database.DB.First(&article, id)
 
   article.Title = title
   article.Content = content
-  database.Db.Save(&article)
+  database.DB.Save(&article)
 
   c.Redirect(http.StatusFound, "/articles/" + strconv.Itoa(article.ID))
 }
 
 func DeleteArticle(c *gin.Context) {
   id := c.Param("id")
-  database.Db.Delete(&models.Article{}, id)
+  database.DB.Delete(&models.Article{}, id)
 
   c.JSON(http.StatusOK, gin.H{"data": true})
 
