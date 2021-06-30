@@ -12,9 +12,17 @@ var router *gin.Engine
 
 func main() {
   database.InitDb()
-  println("start program ....... ")
 
   router := gin.Default()
+
+  router.Static("/assets", "./assets")
+  // router.Static("/vendor", "./assets/vendor")
+  // r.Static("/img", "./static/img")
+  // r.Static("/scss", "./static/scss")
+  // r.Static("/vendor", "./static/vendor")
+  // r.Static("/js", "./static/js")
+  // r.StaticFile("/favicon.ico", "./img/favicon.ico")
+
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/**/*")
 
