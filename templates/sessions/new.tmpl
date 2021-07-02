@@ -18,9 +18,10 @@
     <title>Login Template for Semantic-UI</title>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+      href="/assets/vendor/semantic_ui/css/semantic.css"
       type="text/css"
     />
+    <script src="/assets/vendor/jquery.min.js"></script>
     <style type="text/css">
       body {
         background-color: #dadada;
@@ -44,7 +45,7 @@
         <h2 class="ui teal center aligned header">
           Log-in to your account
         </h2>
-        <form class="ui large form">
+        <form action="/users/login", method="post" class="ui large form">
           <div class="ui stacked segment">
             <div class="field">
               <div class="ui left icon input">
@@ -58,49 +59,13 @@
                 <input name="password" placeholder="Password" type="password" />
               </div>
             </div>
-            <div class="ui fluid large teal submit button">Login</div>
+            <input type="submit" class="ui fluid large teal submit button">Login</input>
           </div>
           <div class="ui error message"></div>
         </form>
         <div class="ui message">New to us?<a href="/users/signup"> Sign Up</a></div>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        $(".ui.form").form({
-          fields: {
-            email: {
-              identifier: "email",
-              rules: [
-                {
-                  type: "empty",
-                  prompt: "Please enter your e-mail"
-                },
-                {
-                  type: "email",
-                  prompt: "Please enter a valid e-mail"
-                }
-              ]
-            },
-            password: {
-              identifier: "password",
-              rules: [
-                {
-                  type: "empty",
-                  prompt: "Please enter your password"
-                },
-                {
-                  type: "length[6]",
-                  prompt: "Your password must be at least 6 characters"
-                }
-              ]
-            }
-          }
-        });
-      });
-    </script>
   </body>
 </html>
 {{ end }}
