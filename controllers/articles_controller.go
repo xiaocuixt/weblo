@@ -6,16 +6,11 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/models"
-  "github.com/gin-contrib/sessions"
 )
 
 func ListArticle(c *gin.Context) {
   var articles []models.Article
   database.DB.Find(&articles)
-
-  session := sessions.Default(c)
-  userID := session.Get("userID")
-  println(userID)
 
   //c.JSON(http.StatusOK, gin.H{"data": articles})
   c.HTML(http.StatusOK, "articles/index.tmpl", gin.H{

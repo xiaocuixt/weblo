@@ -4,6 +4,7 @@ package main
 import (
   "net/http"
   "github.com/gin-gonic/gin"
+  "github.com/xiaocuixt/weblo/models"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/controllers"
 
@@ -30,6 +31,15 @@ func main() {
 
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/**/*")
+  authorized := router.Group("/")
+  authorized.Use(authRequired())
+  {
+    authorized.GET("/articles/new", controllers.NewArticle)
+    authorized.GET("/articles/:id/edit", controllers.EditArticle)
+    authorized.POST("/articles", controllers.CreateArticle)
+    authorized.POST("/articles/:id", controllers.UpdateArticle)
+    authorized.DELETE("/articles/:id", controllers.DeleteArticle)
+  }
 
   router.GET("/", func(c *gin.Context) {
     c.HTML(http.StatusOK, "home/index.tmpl", gin.H{
@@ -37,13 +47,9 @@ func main() {
     })
   })
 
+  // router.Use(checkCurrentUser())  全局middleware
   router.GET("/articles", controllers.ListArticle)
   router.GET("/articles/:id", controllers.ShowArticle)
-  router.GET("/articles/new", controllers.NewArticle)
-  router.POST("/articles", controllers.CreateArticle)
-  router.GET("/articles/:id/edit", controllers.EditArticle)
-  router.POST("/articles/:id", controllers.UpdateArticle)
-  router.DELETE("/articles/:id", controllers.DeleteArticle)
 
   // user auth
   router.GET("/users/signup", controllers.NewUser)
@@ -52,4 +58,21 @@ func main() {
   router.POST("/users/login", controllers.CreateSession)
 
   router.Run()
+}
+
+// currentUser := c.MustGet("currentUser")
+func authRequired() gin.HandlerFunc {
+  return func(c *gin.Context) {
+    var user models.User
+    session := sessions.Default(c)
+    userID := session.Get("userID")
+    err := database.DB.First(&user, userID).Error
+
+    if err != nil {
+      c.Redirect(http.StatusFound, "/users/login")
+    } else {
+      c.Set("currentUser", user)
+      c.Next()
+    }
+  }
 }
