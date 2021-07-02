@@ -32,3 +32,10 @@ func CreateSession(c *gin.Context) {
     c.Redirect(http.StatusFound, "/articles")
   }
 }
+
+func DeleteSession(c *gin.Context) {
+  s := sessions.Default(c)
+  s.Clear()
+  s.Save()
+  c.Redirect(http.StatusFound, "/")
+}

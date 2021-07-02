@@ -56,6 +56,7 @@ func main() {
   router.POST("/users", controllers.CreateUser)
   router.GET("/users/login", controllers.NewSession)
   router.POST("/users/login", controllers.CreateSession)
+  router.GET("/users/logout", controllers.DeleteSession)
 
   router.Run()
 }
