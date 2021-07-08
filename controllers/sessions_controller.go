@@ -29,7 +29,7 @@ func CreateSession(c *gin.Context) {
     session.Clear()
     session.Set("userID", user.ID)
     session.Save()
-    c.Redirect(http.StatusFound, "/articles")
+    c.Redirect(http.StatusFound, "/")
   }
 }
 

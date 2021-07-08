@@ -20,6 +20,7 @@ func main() {
   router := gin.Default()
   store := cookie.NewStore([]byte("secret"))
   router.Use(sessions.Sessions("weblo", store))
+  router.Use(GetCurrentUser())
 
   router.Static("/assets", "./assets")
   // router.Static("/vendor", "./assets/vendor")
@@ -42,8 +43,10 @@ func main() {
   }
 
   router.GET("/", func(c *gin.Context) {
+    user, _ := c.Get("currentUser")
     c.HTML(http.StatusOK, "home/index.tmpl", gin.H{
       "title": "Weblo",
+      "currentUser": user,
     })
   })
 
@@ -61,6 +64,21 @@ func main() {
   router.Run()
 }
 
+
+func GetCurrentUser() gin.HandlerFunc {
+  return func(c *gin.Context) {
+    session := sessions.Default(c)
+    var user models.User
+    if userID := session.Get("userID"); userID != nil {
+      err := database.DB.First(&user, userID).Error
+      if err == nil {
+        c.Set("currentUser", user)
+      }
+    }
+    c.Next()
+  }
+}
+
 // currentUser := c.MustGet("currentUser")
 func authRequired() gin.HandlerFunc {
   return func(c *gin.Context) {
@@ -72,7 +90,6 @@ func authRequired() gin.HandlerFunc {
     if err != nil {
       c.Redirect(http.StatusFound, "/users/login")
     } else {
-      c.Set("currentUser", user)
       c.Next()
     }
   }
