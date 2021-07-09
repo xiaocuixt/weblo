@@ -1,12 +1,12 @@
 {{ define "articles/show.tmpl" }}
   <html>
     {{ template "layouts/header.tmpl" .}}
-    <body>
+    <body class="ui text container">
       {{ template "layouts/menu.tmpl" .}}
       <h1>
         {{ .article.Title }}
       </h1>
-      <p>{{ .article.Content }}</p>
+      <p>{{ .content }}</p>
     </body>
   </html>
 {{ end }}

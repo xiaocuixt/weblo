@@ -27,7 +27,6 @@ func main() {
   // r.Static("/img", "./static/img")
   // r.Static("/scss", "./static/scss")
   // r.Static("/vendor", "./static/vendor")
-  // r.Static("/js", "./static/js")
   // r.StaticFile("/favicon.ico", "./img/favicon.ico")
 
   // loads all the template files located in the templates folder
@@ -43,10 +42,13 @@ func main() {
   }
 
   router.GET("/", func(c *gin.Context) {
+    var articles []models.Article
+    database.DB.Find(&articles)
     user, _ := c.Get("currentUser")
     c.HTML(http.StatusOK, "home/index.tmpl", gin.H{
       "title": "Weblo",
       "currentUser": user,
+      "articles": articles,
     })
   })
 

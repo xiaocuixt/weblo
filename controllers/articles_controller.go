@@ -3,6 +3,7 @@ package controllers
 import (
   "net/http"
   "strconv"
+  "html/template"
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/models"
@@ -38,6 +39,7 @@ func ShowArticle(c *gin.Context) {
   // c.JSON(http.StatusOK, gin.H{"data": article})
   c.HTML(http.StatusOK, "articles/show.tmpl", gin.H{
     "article": article,
+    "content": template.HTML(article.Content),
   })
 }
 

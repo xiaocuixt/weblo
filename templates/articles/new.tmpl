@@ -1,6 +1,8 @@
 {{ define "articles/new.tmpl" }}
   <html>
     {{ template "layouts/header.tmpl" .}}
+    <link rel="stylesheet" href="/assets/vendor/quill/css/quill.snow.css">
+    <script src="/assets/vendor/quill/js/quill.min.js"></script>
     <body>
       {{ template "layouts/menu.tmpl" .}}
       <h1>
@@ -11,10 +13,26 @@
         <input type="text" name="title">
         <br>
         <label for="content">Content</label>
-        <input type="text" name="content">
+        <input type="hidden" name="content" id="articleContent">
+        <div id="editor"></div>
         <br>
         <input type="submit">
       </form>
     </body>
   </html>
+  <script>
+  $(function(){
+    var quill = new Quill('#editor', {
+      modules: { toolbar: true },
+      theme: 'snow'
+    });
+
+    quill.on('text-change', function () {
+      var myEditor = document.querySelector('#editor')
+      var html = myEditor.children[0].innerHTML
+      $("#articleContent").val(html)
+    })
+  })
+</script>
 {{ end }}
+
