@@ -28,9 +28,16 @@ func NewArticle(c *gin.Context) {
 
 func ShowArticle(c *gin.Context) {
   id := c.Param("id")
-
+  user, _ := c.Get("currentUser")
   var article models.Article
+  var comments []models.Comment
   err := database.DB.First(&article, id).Error
+  if err != nil {
+    // handle 404
+    return
+  }
+
+  err = database.DB.Where("article_id = ?", id).Find(&comments).Error
   if err != nil {
     // handle 404
     return
@@ -40,6 +47,8 @@ func ShowArticle(c *gin.Context) {
   c.HTML(http.StatusOK, "articles/show.tmpl", gin.H{
     "article": article,
     "content": template.HTML(article.Content),
+    "currentUser": user,
+    "comments": comments,
   })
 }
 

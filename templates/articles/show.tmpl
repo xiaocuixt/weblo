@@ -7,6 +7,19 @@
         {{ .article.Title }}
       </h1>
       <p>{{ .content }}</p>
+
+      <p>评论:</p>
+      {{ range .comments}}
+        <p>{{.Content }}</p>
+        <p>{{.CreatedAt }}</p>
+      {{ end }}
+
+      <form action="/comments" method="post">
+        <input type="hidden" name="article_id" value={{ .article.ID }}>
+        <input type="hidden" name="user_id" value={{ .currentUser.ID }}>
+        <textarea type="text" name="content"></textarea>
+        <input type="submit" value="提交">
+      </form>
     </body>
   </html>
 {{ end }}
