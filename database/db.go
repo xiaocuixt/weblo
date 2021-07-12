@@ -26,6 +26,7 @@ func InitDb() (*gorm.DB, error) {
    db.AutoMigrate(&models.Article{})
    db.AutoMigrate(&models.User{})
    db.AutoMigrate(&models.Comment{})
+   db.AutoMigrate(&models.Vote{})
 
    return db, err
 }

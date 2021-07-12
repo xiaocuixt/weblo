@@ -40,6 +40,7 @@ func main() {
     authorized.POST("/articles/:id", controllers.UpdateArticle)
     authorized.DELETE("/articles/:id", controllers.DeleteArticle)
     authorized.POST("/comments", controllers.CreateComment)
+    authorized.POST("/votes", controllers.CreateVote)
   }
 
   router.GET("/", func(c *gin.Context) {
