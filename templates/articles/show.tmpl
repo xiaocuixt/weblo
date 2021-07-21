@@ -12,23 +12,29 @@
       {{ range .comments}}
         <p>{{.Content }}</p>
         <p>{{.CreatedAt }}</p>
-        <p>点赞数量: {{.VotesCount }}</p>
-        <form action="/votes" method="post">
-          <input type="hidden" name="vote_type" value='1'>
-          <input type="hidden" name="comment_id" value={{.ID}}>
-          <input type="submit" value="赞">
-        </form>
-        <form action="/votes" method="post">
-          <input type="hidden" name="vote_type" value='0'>
-          <input type="hidden" name="comment_id" value={{.ID}}>
-          <input type="submit" value="踩">
-        </form>
+        <div class="ui buttons">
+          <form action="/votes" method="post">
+            <input type="hidden" name="vote_type" value='1'>
+            <input type="hidden" name="comment_id" value={{.ID}}>
+            <input type="submit" value="赞({{.VotesCount}})" class="ui positive button">
+          </form>
+          <div class="or"></div>
+          <form action="/votes" method="post">
+            <input type="hidden" name="vote_type" value='0'>
+            <input type="hidden" name="comment_id" value={{.ID}}>
+            <input type="submit" value="踩()" class="ui button">
+          </form>
+        </div>
       {{ end }}
-
-      <form action="/comments" method="post">
+      <br>
+      <br>
+      <br>
+      <form action="/comments" class="ui form" method="post">
         <input type="hidden" name="article_id" value={{ .article.ID }}>
-        <textarea type="text" name="content"></textarea>
-        <input type="submit" value="提交">
+        <div class="field">
+          <textarea type="text" name="content"></textarea>
+        </div>
+        <input type="submit" value="提交" class="ui primary button">
       </form>
     </body>
   </html>

@@ -23,24 +23,32 @@ func main() {
   router.Use(GetCurrentUser())
 
   router.Static("/assets", "./assets")
-  // router.Static("/vendor", "./assets/vendor")
-  // r.Static("/img", "./static/img")
-  // r.Static("/scss", "./static/scss")
-  // r.Static("/vendor", "./static/vendor")
-  // r.StaticFile("/favicon.ico", "./img/favicon.ico")
 
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/**/*")
   authorized := router.Group("/")
   authorized.Use(authRequired())
   {
-    authorized.GET("/articles/new", controllers.NewArticle)
-    authorized.GET("/articles/:id/edit", controllers.EditArticle)
-    authorized.POST("/articles", controllers.CreateArticle)
-    authorized.POST("/articles/:id", controllers.UpdateArticle)
-    authorized.DELETE("/articles/:id", controllers.DeleteArticle)
     authorized.POST("/comments", controllers.CreateComment)
     authorized.POST("/votes", controllers.CreateVote)
+  }
+
+  dashboard := router.Group("/dashboard")
+  dashboard.Use(authRequired())
+  {
+    dashboard.GET("/", func(c *gin.Context) {
+      user, _ := c.Get("currentUser")
+      c.HTML(http.StatusOK, "dashboard/index.tmpl", gin.H{
+        "title": "Dashboard",
+        "currentUser": user,
+      })
+    })
+    dashboard.GET("/articles", controllers.ListArticle)
+    dashboard.GET("/articles/new", controllers.NewArticle)
+    dashboard.GET("/articles/:id/edit", controllers.EditArticle)
+    dashboard.POST("/articles", controllers.CreateArticle)
+    dashboard.POST("/articles/:id", controllers.UpdateArticle)
+    dashboard.DELETE("/articles/:id", controllers.DeleteArticle)
   }
 
   router.GET("/", func(c *gin.Context) {
@@ -55,7 +63,6 @@ func main() {
   })
 
   // router.Use(checkCurrentUser())  全局middleware
-  router.GET("/articles", controllers.ListArticle)
   router.GET("/articles/:id", controllers.ShowArticle)
 
   // user auth
