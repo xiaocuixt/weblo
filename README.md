@@ -1,7 +1,6 @@
 # weblo
-Blog By Golang
+Blog By Golang Gin + Semantic Ui + Gorm
 
-Gin + Semantic Ui + Gorm
 
 - [ ] Semantic
 - [ ] User Auth
