@@ -7,6 +7,9 @@ import (
   "github.com/xiaocuixt/weblo/models"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/controllers"
+  // "github.com/xiaocuixt/weblo/lib"
+  // "fmt"
+  // "github.com/spf13/viper"
 
   "github.com/gin-contrib/sessions"
   "github.com/gin-contrib/sessions/cookie"
@@ -16,7 +19,7 @@ var router *gin.Engine
 
 func main() {
   database.InitDb()
-
+  // fmt.Println(viper.GetString("name"))
   router := gin.Default()
   store := cookie.NewStore([]byte("secret"))
   router.Use(sessions.Sessions("weblo", store))
