@@ -15,7 +15,7 @@ func init() {
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("Config file changed:", e.Name)
 	})
-
+  // fmt.Println(viper.GetString("name"))
 	// viper解析配置文件
 	err := viper.ReadInConfig() 
 	if err != nil {
