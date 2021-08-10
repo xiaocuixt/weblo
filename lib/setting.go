@@ -7,7 +7,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func init() {
+func Run() {
 	viper.AddConfigPath("./config")
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")

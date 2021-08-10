@@ -6,7 +6,6 @@ import (
    "gorm.io/gorm"
    "github.com/xiaocuixt/weblo/models"
    "github.com/spf13/viper"
-   _ "github.com/xiaocuixt/weblo/lib"
 )
 
 var DB *gorm.DB
