@@ -8,11 +8,22 @@ import (
 	"github.com/xiaocuixt/weblo/middleware"
 	"github.com/xiaocuixt/weblo/controllers"
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
+  "github.com/gin-contrib/sessions/cookie"
+  "html/template"
+  "github.com/xiaocuixt/weblo/helpers"
 )
+
+func setTemplate(engine *gin.Engine) {
+
+	funcMap := template.FuncMap{
+		"datetimeFormat": helpers.DatetimeFormat,
+	}
+	engine.SetFuncMap(funcMap)
+}
 
 func InitRouter() *gin.Engine {
   router := gin.Default()
+  setTemplate(router)
   store := cookie.NewStore([]byte("secret"))
   router.Use(sessions.Sessions("weblo", store))
   router.Use(middleware.GetCurrentUser())
