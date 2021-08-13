@@ -3,7 +3,7 @@ package controllers
 import (
   "fmt"
   "net/http"
-  "strconv"
+  // "strconv"
   "html/template"
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
@@ -83,7 +83,10 @@ func EditArticle(c *gin.Context) {
   id := c.Param("id")
 
   var article models.Article
-  database.DB.First(&article, id)
+  err := database.DB.First(&article, "id = ?", id).Error
+  if err != nil {
+    return
+  }
 
   c.HTML(http.StatusOK, "articles/edit.tmpl", gin.H{
     "article": article,
@@ -96,13 +99,17 @@ func UpdateArticle(c *gin.Context) {
   id := c.Param("id")
 
   var article models.Article
-  database.DB.First(&article, id)
+  err := database.DB.First(&article, "id = ?", id).Error
+  if err != nil {
+    return
+  }
 
   article.Title = title
   article.Content = content
   database.DB.Save(&article)
 
-  c.Redirect(http.StatusFound, "/articles/" + strconv.Itoa(article.ID))
+  // c.Redirect(http.StatusFound, "/dashboard/articles/" + strconv.Itoa(article.ID))
+  c.Redirect(http.StatusFound, "/dashboard/articles")
 }
 
 func DeleteArticle(c *gin.Context) {
