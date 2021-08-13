@@ -22,9 +22,7 @@ func ListArticle(c *gin.Context) {
 }
 
 func NewArticle(c *gin.Context) {
-  c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{
-    "title": "new article",
-  })
+  c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{})
 }
 
 func ShowArticle(c *gin.Context) {
@@ -68,7 +66,6 @@ func CreateArticle(c *gin.Context) {
     c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{
 			"article": article,
       "message": err,
-      "title": "new article",
       "errClass": errClass,
 		})
 		return
@@ -83,10 +80,7 @@ func EditArticle(c *gin.Context) {
   id := c.Param("id")
 
   var article models.Article
-  err := database.DB.First(&article, "id = ?", id).Error
-  if err != nil {
-    return
-  }
+  database.DB.First(&article, "id = ?", id)
 
   c.HTML(http.StatusOK, "articles/edit.tmpl", gin.H{
     "article": article,
@@ -97,15 +91,29 @@ func UpdateArticle(c *gin.Context) {
   title := c.PostForm("title")
   content := c.PostForm("content")
   id := c.Param("id")
-
+  fmt.Println(id)
   var article models.Article
-  err := database.DB.First(&article, "id = ?", id).Error
-  if err != nil {
-    return
-  }
+  database.DB.First(&article, "id = ?", id)
 
   article.Title = title
   article.Content = content
+
+  fmt.Println(title)
+
+  validate_err := article.Validate()
+  fmt.Println(reflect.TypeOf(validate_err))
+  fmt.Println(validate_err)
+  var errClass string
+  if validate_err != nil {
+    errClass = "error"
+    c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{
+			"article": article,
+      "message": validate_err,
+      "errClass": errClass,
+		})
+		return
+  }
+
   database.DB.Save(&article)
 
   // c.Redirect(http.StatusFound, "/dashboard/articles/" + strconv.Itoa(article.ID))

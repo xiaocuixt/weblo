@@ -31,8 +31,11 @@
       theme: 'snow'
     });
 
-    var delta = quill.clipboard.convert($("#articleContent").val());
-    quill.setContents(delta, 'silent')
+    var content = $("#articleContent").val();
+    if(content.length > 0) {
+      var delta = quill.clipboard.convert($("#articleContent").val());
+      quill.setContents(delta, 'silent')
+    }
 
     $( ".js-article-form" ).submit(function() {
       $("#articleContent").val(quill.root.innerHTML);

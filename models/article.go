@@ -8,8 +8,7 @@ import (
 
 type Article struct {
   gorm.Model
-  ID    int
-  Title  string `gorm:"primaryKey"`
+  Title  string
   Content string
 
   Comments []Comment

@@ -6,9 +6,6 @@
     <body>
       {{ template "layouts/menu.tmpl" .}}
       <div class="ui container">
-        <h1>
-          {{ .title }}
-        </h1>
         <form action="/dashboard/articles" class="ui form js-article-form {{ .errClass }}" method="POST">
           <label for="title">Title</label>
           <input type="text" name="title" value={{ .article.Title }}>
