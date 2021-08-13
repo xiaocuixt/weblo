@@ -10,8 +10,8 @@
 
     {{ range .articles }}
       <h5><a href="/articles/{{.ID}}">{{ .Title }}</a></h5>
-      <span><a href="/articles/{{.ID}}/edit">编辑</a></span>
-      <span><a href="/articles/{{.ID}}" data-method="delete">删除</a></span>
+      <span><a href="/dashboard/articles/{{.ID}}/edit">编辑</a></span>
+      <span><a href="/dashboard/articles/{{.ID}}" data-method="delete">删除</a></span>
       <p>{{ .Content }}</p>
     {{end}}
   </body>

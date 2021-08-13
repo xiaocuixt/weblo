@@ -5,19 +5,23 @@
     <script src="/assets/vendor/quill/js/quill.min.js"></script>
     <body>
       {{ template "layouts/menu.tmpl" .}}
-      <h1>
-        {{ .title }}
-      </h1>
-      <form action="/articles" method="POST">
-        <label for="title">Title</label>
-        <input type="text" name="title">
-        <br>
-        <label for="content">Content</label>
-        <input type="hidden" name="content" id="articleContent">
-        <div id="editor"></div>
-        <br>
-        <input type="submit">
-      </form>
+      <div class="ui container">
+        <h1>
+          {{ .title }}
+        </h1>
+        <form action="/dashboard/articles" class="ui form {{ .errClass }}" method="POST">
+          <label for="title">Title</label>
+          <input type="text" name="title" value={{ .article.Title }}>
+          <div class="ui error message">{{ .message.Title }}</div>
+          <br>
+          <label for="content">Content</label>
+          <input type="hidden" name="content" id="articleContent" value={{ .article.Content }}>
+          <div id="editor"></div>
+          <div class="ui error message">{{ .message.Content }}</div>
+          <br>
+          <input type="submit" class="ui primary button">
+        </form>
+      </div>
     </body>
   </html>
   <script>

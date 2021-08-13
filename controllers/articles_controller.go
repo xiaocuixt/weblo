@@ -1,12 +1,14 @@
 package controllers
 
 import (
+  "fmt"
   "net/http"
   "strconv"
   "html/template"
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/models"
+  "reflect"
 )
 
 func ListArticle(c *gin.Context) {
@@ -25,13 +27,13 @@ func NewArticle(c *gin.Context) {
   })
 }
 
-
 func ShowArticle(c *gin.Context) {
   id := c.Param("id")
   user, _ := c.Get("currentUser")
   var article models.Article
   var comments []models.Comment
-  err := database.DB.First(&article, id).Error
+
+  err := database.DB.First(&article, "id = ?", id).Error
   if err != nil {
     // handle 404
     return
@@ -57,9 +59,24 @@ func CreateArticle(c *gin.Context) {
   content := c.PostForm("content")
 
   article := models.Article{Title: title, Content: content}
+  err := article.Validate()
+  fmt.Println(reflect.TypeOf(err))
+  fmt.Println(err)
+  var errClass string
+  if err != nil {
+    errClass = "error"
+    c.HTML(http.StatusOK, "articles/new.tmpl", gin.H{
+			"article": article,
+      "message": err,
+      "title": "new article",
+      "errClass": errClass,
+		})
+		return
+  }
+  
   database.DB.Create(&article)
 
-  c.Redirect(http.StatusFound, "/articles")
+  c.Redirect(http.StatusFound, "/dashboard/articles")
 }
 
 func EditArticle(c *gin.Context) {
