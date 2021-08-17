@@ -3,6 +3,7 @@ package controllers
 import (
   "net/http"
   "strconv"
+  "fmt"
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/models"
@@ -25,19 +26,21 @@ func CreateVote(c *gin.Context) {
   sessionUserID := session.Get("userID")
   userID := sessionUserID.(uint)
 
-  if _voteType > 0 {
-    database.DB.Model(&comment).Update("VotesCount", comment.VotesCount + 1)
-  } else {
-    database.DB.Model(&comment).Update("VotesCount", comment.VotesCount - 1)
-  }
-
   vote := models.Vote{
     VotableID: _commentId,
     VotableType: "Comment",
     UserID: userID,
     VoteType: _voteType,
   }
-  database.DB.Create(&vote)
+  result := database.DB.Create(&vote)
+  fmt.Println(result.Error)
 
+  if result.Error == nil {
+    if _voteType > 0 {
+      database.DB.Model(&comment).Update("VotesCount", comment.VotesCount + 1)
+    } else {
+      database.DB.Model(&comment).Update("VotesCount", comment.VotesCount - 1)
+    }
+  }
   c.Redirect(http.StatusFound, "/articles/" + strconv.Itoa(int(comment.ArticleID)))
 }
