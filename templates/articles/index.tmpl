@@ -147,6 +147,15 @@
             {{ end }}
           </tbody>
         </table>
+        <div>
+          {{ if gt .currentPage 1 }} 
+            <a href="/dashboard/articles?page={{Decr .currentPage}}">上一页</a>
+          {{ end }}
+          总页数{{.totalPages}}({{.currentPage}})
+          {{ if lt .currentPage .totalPages }}
+            <a href="/dashboard/articles?page={{Incr .currentPage}}">下一页</a>
+          {{ end }}
+        </div>
       </div>
     </div>
 

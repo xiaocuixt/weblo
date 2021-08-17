@@ -17,6 +17,8 @@ func setTemplate(engine *gin.Engine) {
 
 	funcMap := template.FuncMap{
 		"datetimeFormat": helpers.DatetimeFormat,
+		"Incr": helpers.Incr,
+		"Decr": helpers.Decr,
 	}
 	engine.SetFuncMap(funcMap)
 }

@@ -3,21 +3,35 @@ package controllers
 import (
   "fmt"
   "net/http"
-  // "strconv"
+  "strconv"
   "html/template"
   "github.com/gin-gonic/gin"
   "github.com/xiaocuixt/weblo/database"
   "github.com/xiaocuixt/weblo/models"
+  "github.com/xiaocuixt/weblo/utils"
   "reflect"
+  "math"
 )
 
 func ListArticle(c *gin.Context) {
+  var count int64
   var articles []models.Article
-  database.DB.Find(&articles)
+  database.DB.Model(&models.Article{}).Count(&count)
+  pages, _ := strconv.Atoi(c.Query("per_page"))
+  if pages <= 0 {
+    pages = 10
+  }
+  currentPage, _ := strconv.Atoi(c.Query("page"))
+  totalPages := int(math.Ceil(float64(count) / float64(pages)))
+  fmt.Println(count)
+  fmt.Println(totalPages)
+  database.DB.Scopes(utils.Paginate(c.Query("page"), c.Query("per_page"), c)).Find(&articles)
 
   //c.JSON(http.StatusOK, gin.H{"data": articles})
   c.HTML(http.StatusOK, "articles/index.tmpl", gin.H{
     "articles": articles,
+    "totalPages": totalPages,
+    "currentPage": currentPage,
   })
 }
 
