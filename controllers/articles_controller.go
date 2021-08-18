@@ -44,6 +44,7 @@ func ShowArticle(c *gin.Context) {
   user, _ := c.Get("currentUser")
   var article models.Article
   var comments []models.Comment
+  // var voteableIds []string
 
   err := database.DB.First(&article, "id = ?", id).Error
   if err != nil {
@@ -56,6 +57,10 @@ func ShowArticle(c *gin.Context) {
     // handle 404
     return
   }
+  // voteIDs := database.DB.Model(&models.Vote{}).Where("user_id = ?", user.Email).Distinct().Pluck("voteable_id", &voteableIds)
+  // fmt.Println(voteIDs)
+  // myVote := database.DB.Where("user_id = ?", user.ID).Find(&votes)
+  // hasVotedArticle := 
 
   // c.JSON(http.StatusOK, gin.H{"data": article})
   c.HTML(http.StatusOK, "articles/show.tmpl", gin.H{

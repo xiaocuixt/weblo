@@ -12,13 +12,19 @@
       <p>评论:</p>
       {{ range .comments }}
         <div class="ui">
-          <form action="/votes" method="post">
-            <input type="hidden" name="vote_type" value='1'>
-            <input type="hidden" name="comment_id" value={{.ID}}>
-            <button type="submit" class="ui button">
+          {{ if .VotedBy $.currentUser.ID }}
+            <button class="ui button primary disabled">
               <i class="chevron up icon"></i> {{.VotesCount}}
             </button>
-          </form>
+          {{ else }}
+            <form action="/votes" method="post">
+              <input type="hidden" name="vote_type" value='1'>
+              <input type="hidden" name="comment_id" value={{.ID}}>
+              <button type="submit" class="ui button">
+                <i class="chevron up icon"></i> {{.VotesCount}}
+              </button>
+            </form>
+          {{ end }}
 
           <!--
             <div class="or"></div>

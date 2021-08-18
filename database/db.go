@@ -4,7 +4,6 @@ import (
    // "fmt"
    "gorm.io/driver/mysql"
    "gorm.io/gorm"
-   "github.com/xiaocuixt/weblo/models"
    "github.com/spf13/viper"
 )
 
@@ -18,10 +17,5 @@ func InitDb() (*gorm.DB, error) {
    }
 
    DB = db
-   db.AutoMigrate(&models.Article{})
-   db.AutoMigrate(&models.User{})
-   db.AutoMigrate(&models.Comment{})
-   db.AutoMigrate(&models.Vote{})
-
    return db, err
 }
