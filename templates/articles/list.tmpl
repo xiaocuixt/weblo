@@ -1,0 +1,176 @@
+{{ define "articles/list.tmpl" }}
+<!-- https://github.com/frontendfunn/semantic-ui-admin-dashboard-template -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="/assets/vendor/semantic_ui/css/semantic.css">
+    <link rel="stylesheet" href="/assets/css/dashboard/layout.css">
+    <script src="/assets/vendor/semantic_ui/jquery.min.js"></script>
+    <script src="/assets/vendor/semantic_ui/js/semantic.js"></script>
+  </head>
+
+  <body>
+    <!-- sidebar -->
+    <div class="ui sidebar inverted vertical menu sidebar-menu" id="sidebar">
+      <div class="item">
+        <div class="header">General</div>
+        <div class="menu">
+          <a class="item">
+            <div>
+              <i class="icon tachometer alternate"></i>
+              Dashboard
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="item">
+        <div class="header">
+          Administration
+        </div>
+        <div class="menu">
+          <a class="item">
+            <div><i class="cogs icon"></i>Settings</div>
+          </a>
+          <a class="item">
+            <div><i class="users icon"></i>Team</div>
+          </a>
+        </div>
+      </div>
+
+      <a href="#" class="item">
+        <div>
+          <i class="icon chart line"></i>
+          Charts
+        </div>
+      </a>
+
+      <a class="item">
+        <div>
+          <i class="icon lightbulb"></i>
+          Apps
+        </div>
+      </a>
+      <div class="item">
+        <div class="header">Other</div>
+        <div class="menu">
+          <a href="#" class="item">
+            <div>
+              <i class="icon envelope"></i>
+              Messages
+            </div>
+          </a>
+
+          <a href="#" class="item">
+            <div>
+              <i class="icon calendar alternate"></i>
+              Calendar
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="item">
+        <form action="#">
+          <div class="ui mini action input">
+            <input type="text" placeholder="Search..." />
+            <button class="ui mini icon button">
+              <i class=" search icon"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="ui segment inverted">
+        <div class="ui tiny olive inverted progress">
+          <div class="bar" style="width: 54%"></div>
+          <div class="label">Monthly Bandwidth</div>
+        </div>
+
+        <div class="ui tiny teal inverted progress">
+          <div class="bar" style="width:78%"></div>
+          <div class="label">Disk Usage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sidebar -->
+    <!-- top nav -->
+
+    <nav class="ui top fixed inverted menu">
+      <div class="left menu">
+        <a href="#" class="sidebar-menu-toggler item" data-target="#sidebar">
+          <i class="sidebar icon"></i>
+        </a>
+        <a href="#" class="header item">
+          Semantic UI
+        </a>
+      </div>
+
+      <div class="right menu">
+        <a href="#" class="item">
+          <i class="bell icon"></i>
+        </a>
+        <div class="ui dropdown item">
+          <i class="user cirlce icon"></i>
+          <div class="menu">
+            <a href="#" class="item">
+              <i class="info circle icon"></i> Profile</a
+            >
+            <a href="#" class="item">
+              <i class="wrench icon"></i>
+              Settings</a
+            >
+            <a href="#" class="item">
+              <i class="sign-out icon"></i>
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- top nav -->
+
+    <div class="pusher">
+      <div class="main-content" style="padding: 20px;">
+        <table class="ui table">
+          <tbody>
+            {{ range $i, $e := .articles }}
+              <tr>
+                <td class="collapsing">{{ $i }}</td>
+                <td>{{ .Title }}</td>
+                <td><a href="/dashboard/articles/{{.ID}}/edit">编辑</a></td>
+              </tr>
+            {{ end }}
+          </tbody>
+        </table>
+        <div>
+          {{ if gt .currentPage 1 }} 
+            <a href="/dashboard/articles/list?page={{Decr .currentPage}}">上一页</a>
+          {{ end }}
+          总页数{{.totalPages}}({{.currentPage}})
+          {{ if lt .currentPage .totalPages }}
+            <a href="/dashboard/articles/list?page={{Incr .currentPage}}">下一页</a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+      integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
+
+{{ end }}

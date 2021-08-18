@@ -21,5 +21,6 @@ var router *gin.Engine
 
 func main() {
   router := routers.InitRouter()
+  router.Static("/assets", "./assets")
   router.Run()
 }

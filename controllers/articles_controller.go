@@ -13,7 +13,7 @@ import (
   "math"
 )
 
-func ListArticle(c *gin.Context) {
+func IndexArticle(c *gin.Context) {
   var count int64
   var articles []models.Article
   database.DB.Model(&models.Article{}).Count(&count)
@@ -22,6 +22,9 @@ func ListArticle(c *gin.Context) {
     pages = 10
   }
   currentPage, _ := strconv.Atoi(c.Query("page"))
+  if currentPage == 0 {
+    currentPage = currentPage + 1
+  }
   totalPages := int(math.Ceil(float64(count) / float64(pages)))
   fmt.Println(count)
   fmt.Println(totalPages)
@@ -29,6 +32,31 @@ func ListArticle(c *gin.Context) {
 
   //c.JSON(http.StatusOK, gin.H{"data": articles})
   c.HTML(http.StatusOK, "articles/index.tmpl", gin.H{
+    "articles": articles,
+    "totalPages": totalPages,
+    "currentPage": currentPage,
+  })
+}
+
+func DashboardListArticle(c *gin.Context) {
+  var count int64
+  var articles []models.Article
+  database.DB.Model(&models.Article{}).Count(&count)
+  pages, _ := strconv.Atoi(c.Query("per_page"))
+  if pages <= 0 {
+    pages = 10
+  }
+  currentPage, _ := strconv.Atoi(c.Query("page"))
+  if currentPage == 0 {
+    currentPage = currentPage + 1
+  }
+  totalPages := int(math.Ceil(float64(count) / float64(pages)))
+  fmt.Println(count)
+  fmt.Println(totalPages)
+  database.DB.Scopes(utils.Paginate(c.Query("page"), c.Query("per_page"), c)).Find(&articles)
+
+  //c.JSON(http.StatusOK, gin.H{"data": articles})
+  c.HTML(http.StatusOK, "articles/list.tmpl", gin.H{
     "articles": articles,
     "totalPages": totalPages,
     "currentPage": currentPage,

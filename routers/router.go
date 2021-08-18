@@ -30,7 +30,9 @@ func InitRouter() *gin.Engine {
   router.Use(sessions.Sessions("weblo", store))
   router.Use(middleware.GetCurrentUser())
 
-  router.Static("/assets", "./assets")
+  // router.Use(checkCurrentUser())  全局middleware
+  router.GET("/articles/:id", controllers.ShowArticle)
+  router.GET("/articles", controllers.IndexArticle)
 
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/**/*")
@@ -51,7 +53,7 @@ func InitRouter() *gin.Engine {
         "currentUser": user,
       })
     })
-    dashboard.GET("/articles", controllers.ListArticle)
+    dashboard.GET("/articles/list", controllers.DashboardListArticle)
     dashboard.GET("/articles/new", controllers.NewArticle)
     dashboard.GET("/articles/:id/edit", controllers.EditArticle)
     dashboard.POST("/articles", controllers.CreateArticle)
@@ -61,7 +63,7 @@ func InitRouter() *gin.Engine {
 
   router.GET("/", func(c *gin.Context) {
     var articles []models.Article
-    database.DB.Find(&articles)
+    database.DB.Limit(10).Find(&articles)
     user, _ := c.Get("currentUser")
     c.HTML(http.StatusOK, "home/index.tmpl", gin.H{
       "title": "Weblo",
@@ -69,9 +71,6 @@ func InitRouter() *gin.Engine {
       "articles": articles,
     })
   })
-
-  // router.Use(checkCurrentUser())  全局middleware
-  router.GET("/articles/:id", controllers.ShowArticle)
 
   // user auth
   router.GET("/users/signup", controllers.NewUser)
