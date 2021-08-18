@@ -2,52 +2,49 @@
   <html>
     {{ template "layouts/header.tmpl" .}}
     <body class="ui text container">
-      <h1>
+      {{ template "layouts/menu.tmpl" .}}
+      <h3 class="ui header">
         {{ .article.Title }}
-      </h1>
-      <p>{{ .content }}</p>
+      </h3>
+      <p style="font-size: 12px;color: grey;">发布于: {{ datetimeFormat .article.CreatedAt "2006-01-02 15:04" }}</p>
+      <p style="font-size: 14px;">{{ .content }}</p>
       <br>
       <br>
       <br>
       <p>评论:</p>
-      {{ range .comments }}
-        <div class="ui">
-          {{ if .VotedBy $.currentUser.ID }}
-            <button class="ui button primary disabled">
-              <i class="chevron up icon"></i> {{.VotesCount}}
-            </button>
-          {{ else }}
-            <form action="/votes" method="post">
-              <input type="hidden" name="vote_type" value='1'>
-              <input type="hidden" name="comment_id" value={{.ID}}>
-              <button type="submit" class="ui button">
-                <i class="chevron up icon"></i> {{.VotesCount}}
-              </button>
-            </form>
-          {{ end }}
+      <div class="ui comments">
+        {{ range .comments }}
+          <div class="comment">
+            <a class="avatar" style="width:35px;height: 35px;">
+              <img src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+            </a>
+            <div class="content">
+              <a class="author">Stevie Feliciano</a>
+              <div class="metadata">
+                <div class="date">{{ datetimeFormat .CreatedAt "2006-01-02 15:04" }}</div>
+                <div class="rating">
+                  {{ if .VotedBy $.currentUser.ID }}
+                    <i class="star blue icon"></i>
+                  {{ else }}
+                    <form action="/votes" style="display:none;" method="post">
+                      <input type="hidden" name="vote_type" value='1'>
+                      <input type="hidden" name="comment_id" value={{.ID}}>
+                    </form>
+                    <a style="color: grey;" href="javascript:;" onclick="$(this).siblings('form').submit();"><i class="star icon"></i></a>
+                  {{ end }}
+                  {{.VotesCount}} 赞
+                </div>
+              </div>
+              <div class="text">{{ .Content }}</div>
+            </div>
+          </div>
+        {{end}}
+      </div>
 
-          <!--
-            <div class="or"></div>
-            <form action="/votes" method="post">
-              <input type="hidden" name="vote_type" value='0'>
-              <input type="hidden" name="comment_id" value={{.ID}}>
-              <input type="submit" value="踩()" class="ui button">
-              <i class="chevron down icon"></i>
-            </form>
-          -->
-        </div>
-        <div class="ui segment">
-          <p>{{.Content }}</p>
-          <p>{{ datetimeFormat .CreatedAt "2006-01-02 15:04" }}</p>
-        </div>
-      {{ end }}
-      <br>
-      <br>
-      <br>
       <form action="/comments" class="ui form" method="post">
         <input type="hidden" name="article_id" value={{ .article.ID }}>
         <div class="field">
-          <textarea type="text" name="content"></textarea>
+          <textarea type="text" name="content" rows="4"></textarea>
         </div>
         <input type="submit" value="提交" class="ui primary button">
       </form>
