@@ -6,7 +6,7 @@
   <body class="ui text container">
     {{ template "layouts/menu.tmpl" .}}
     <div class="pusher">
-      <div class="ui main-content" style="padding: 20px;">
+      <div class="ui main-content">
         {{ range $i, $e := .articles }}
           <a style="display: block;border: solid 1px #eee;padding: 10px;margin-bottom: 15px;" class="article" href="/articles/{{.ID}}">
             <p style="font-size: 16px">{{ .Title }}</p>

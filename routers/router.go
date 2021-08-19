@@ -33,6 +33,7 @@ func InitRouter() *gin.Engine {
   // router.Use(checkCurrentUser())  全局middleware
   router.GET("/articles/:id", controllers.ShowArticle)
   router.GET("/articles", controllers.IndexArticle)
+  router.GET("/about", controllers.Abount)
 
   // loads all the template files located in the templates folder
   router.LoadHTMLGlob("templates/**/*")
