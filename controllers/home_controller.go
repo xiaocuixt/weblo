@@ -6,5 +6,6 @@ import (
 
 func Abount(c *gin.Context)  {
 	c.HTML(http.StatusOK, "home/about.tmpl", gin.H{
+		"page": "about",
   })
 }

@@ -70,6 +70,7 @@ func InitRouter() *gin.Engine {
       "title": "Weblo",
       "currentUser": user,
       "articles": articles,
+      "page": "home",
     })
   })
 

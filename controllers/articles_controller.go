@@ -35,6 +35,7 @@ func IndexArticle(c *gin.Context) {
     "articles": articles,
     "totalPages": totalPages,
     "currentPage": currentPage,
+    "page": "articles",
   })
 }
 
@@ -96,6 +97,7 @@ func ShowArticle(c *gin.Context) {
     "content": template.HTML(article.Content),
     "currentUser": user,
     "comments": comments,
+    "page": "home",
   })
 }
 
